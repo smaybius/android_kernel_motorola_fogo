@@ -26,6 +26,450 @@ ifeq ($(CONFIG_ARCH_VOLCANO),y)
 dtbo-y += volcano-ipa.dtbo
 endif
 
+ifeq ($(CONFIG_ARCH_PINEAPPLE), y)
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+dtbo-y += pineapple-dsp.dtbo
+endif
+endif
+
+ifeq ($(CONFIG_ARCH_QTI_VM), y)
+dtbo-y += pineapple-dsp-trustedvm.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_BLAIR), y)
+dtbo-y += blair-dsp.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_HOLI), y)
+dtbo-y += holi-dsp.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_CLIFFS), y)
+dtbo-y += cliffs-dsp.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_VOLCANO), y)
+dtbo-y += volcano-dsp.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PITTI), y)
+dtbo-y += pitti-dsp.dtbo
+endif
+
+ifeq ($(CONFIG_TARGET), neo_le)
+dtbo-$(CONFIG_ARCH_NEO) += display/neo-sde.dtbo \
+                display/neo-sde-display-idp-overlay.dtbo \
+                display/neo-sde-display-qxr-overlay.dtbo \
+                display/foreseer-sde-display-qxr-overlay.dtbo
+endif
+
+ifeq ($(CONFIG_TARGET), neo_la)
+dtbo-$(CONFIG_ARCH_NEO) += display/neo-sde.dtbo \
+                display/neo_la-sde-no-display-overlay.dtbo \
+                display/neo_luna-v2-sde-display-idp-overlay.dtbo \
+		display/neo_luna-v2-sde-display-sg-idp-overlay.dtbo
+endif
+
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+#remove useless qcom device tree in moto build
+ifneq ($(CONFIG_MMI_DEVICE_DTBS),y)
+dtbo-$(CONFIG_ARCH_WAIPIO) += display/waipio-sde.dtbo \
+		display/waipio-sde-display-mtp-overlay.dtbo \
+		display/waipio-sde-display-cphy-mtp-overlay.dtbo \
+		display/waipio-sde-display-mtp-68disp-overlay.dtbo \
+		display/waipio-sde-display-cdp-overlay.dtbo \
+		display/waipio-sde-display-qrd-overlay.dtbo \
+		display/waipio-sde-display-hdk-overlay.dtbo \
+		display/waipio-sde-display-waipio-lemur-cdp-overlay.dtbo \
+		display/waipio-sde-display-waipio-lemur-mtp-overlay.dtbo \
+		display/waipio-sde-display-rumi-overlay.dtbo
+else
+# Li display bringup
+ifeq ($(CONFIG_LI_DTB),y)
+dtbo-$(CONFIG_ARCH_WAIPIO) += display/waipio-sde.dtbo \
+		display/waipio-sde-display-li-evb1-overlay.dtbo
+else
+dtbo-$(CONFIG_ARCH_WAIPIO) += display/waipio-sde-hiphic.dtbo \
+		display/waipio-sde-display-hiphi-evb1-overlay.dtbo \
+		display/waipio-sde-display-hiphic-evb1-overlay.dtbo\
+		display/waipio-mot-ironmn-display-evb1-overlay.dtbo \
+		display/waipio-sde-display-hiphid-pvt-overlay.dtbo
+endif  #($CONFIG_LI_DTB,y)
+endif  #($(CONFIG_MMI_DEVICE_DTBS),y)
+else
+dtbo-$(CONFIG_ARCH_WAIPIO) += display/trustedvm-waipio-sde-display-mtp-overlay.dtbo \
+		display/trustedvm-waipio-sde-display-cdp-overlay.dtbo \
+		display/trustedvm-waipio-sde-display-rumi-overlay.dtbo \
+		display/trustedvm-waipio-sde-display-qrd-overlay.dtbo
+endif
+
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+#remove useless qcom device tree in moto build
+ifneq ($(CONFIG_MMI_DEVICE_DTBS),y)
+dtbo-$(CONFIG_ARCH_CAPE) += display/cape-sde.dtbo \
+		display/cape-sde-display-atp-overlay.dtbo \
+		display/cape-sde-display-cdp-overlay.dtbo \
+		display/cape-sde-display-cdp-qhd-overlay.dtbo \
+		display/cape-sde-display-mtp-overlay.dtbo \
+		display/cape-sde-display-mtp-120fps-overlay.dtbo \
+		display/cape-sde-display-mtp-nodisplay-overlay.dtbo \
+		display/cape-sde-display-qrd-overlay.dtbo
+else
+ifeq ($(CONFIG_ONELI_DTB),y)
+dtbo-$(CONFIG_ARCH_CAPE) += display/cape-sde-oneli.dtbo \
+		display/cape-sde-display-oneli-evt1-overlay.dtbo \
+		display/cape-sde-display-oneli-dvt1b-overlay.dtbo \
+		display/cape-sde-display-oneli-dvt2a-overlay.dtbo
+endif  #($CONFIG_ONELI_DTB,y)
+ifeq ($(CONFIG_ZEEKR_DTB),y)
+dtbo-$(CONFIG_ARCH_CAPE) += display/cape-sde.dtbo \
+		display/cape-sde-display-zeekr-evb-overlay.dtbo
+endif  #($CONFIG_ZEEKR_DTB,y)
+ifeq ($(CONFIG_FELIX_DTB),y)
+dtbo-$(CONFIG_ARCH_CAPE) += display/cape-sde.dtbo \
+		display/cape-sde-display-felix-evt1-overlay.dtbo \
+		display/cape-sde-display-oneli-dvt1b-overlay.dtbo \
+		display/cape-sde-display-oneli-dvt2a-overlay.dtbo
+endif  #($CONFIG_FELIX_DTB,y)
+ifeq ($(CONFIG_EQS_DTB),y)
+dtbo-$(CONFIG_ARCH_CAPE) += display/cape-sde-eqs.dtbo \
+		display/cape-sde-display-eqs-evt1-overlay.dtbo
+endif  #($CONFIG_EQS_DTB,y)
+
+dtbo-$(CONFIG_BRONCO_DTB) += display/cape-sde-bronco.dtbo \
+		display/cape-sde-display-bronco-evb1-overlay.dtbo
+
+endif  #($(CONFIG_MMI_DEVICE_DTBS),y)
+else
+dtbo-$(CONFIG_ARCH_CAPE) += display/trustedvm-cape-sde-display-qrd-overlay.dtbo \
+		display/trustedvm-cape-sde-display-cdp-overlay.dtbo \
+		display/trustedvm-cape-sde-display-cdp-qhd-overlay.dtbo \
+		display/trustedvm-cape-sde-display-mtp-overlay.dtbo
+endif
+
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+#remove useless qcom device tree in moto build
+ifneq ($(CONFIG_MMI_DEVICE_DTBS),y)
+dtbo-$(CONFIG_ARCH_DIWALI) += display/diwali-sde.dtbo \
+		display/diwali-sde-display-atp-overlay.dtbo \
+		display/diwali-sde-display-idp-overlay.dtbo \
+		display/diwali-sde-display-idp-amoled-overlay.dtbo \
+		display/diwali-sde-display-qrd-overlay.dtbo \
+		display/diwali-sde-display-rumi-overlay.dtbo
+else
+ifeq ($(CONFIG_LYNKCO_DTB),y)
+dtbo-$(CONFIG_ARCH_DIWALI) += display/diwali-sde.dtbo \
+		display/diwali-sde-display-lynkco-evb1-overlay.dtbo \
+		display/diwali-sde-display-lynkco-dvt2c-overlay.dtbo \
+		display/diwali-sde-display-lynkco-pvt-overlay.dtbo
+endif  #($CONFIG_LYNKCO_DTB,y)
+ifeq ($(CONFIG_TANK_DTB),y)
+dtbo-$(CONFIG_ARCH_DIWALI) += display/diwali-sde.dtbo \
+		display/diwali-sde-display-tank-evb1-overlay.dtbo
+endif  #($CONFIG_TANK_DTB,y)
+endif  #($(CONFIG_MMI_DEVICE_DTBS),y)
+else
+dtbo-$(CONFIG_ARCH_DIWALI) += display/trustedvm-diwali-sde-display-idp-overlay.dtbo \
+		display/trustedvm-diwali-sde-display-qrd-overlay.dtbo
+endif
+
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+ifneq ($(CONFIG_MMI_DEVICE_DTBS),y)
+dtbo-$(CONFIG_ARCH_PARROT) += display/parrot-sde.dtbo \
+		display/parrot-sde-display-atp-overlay.dtbo \
+		display/parrot-sde-display-idp-overlay.dtbo \
+		display/parrot-sde-display-idp-amoled-overlay.dtbo \
+		display/parrot-sde-display-rumi-overlay.dtbo \
+		display/parrot-sde-display-qrd-overlay.dtbo
+else
+dtbo-$(CONFIG_AVATRN_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-avatrn-evt1-overlay.dtbo \
+               display/parrot-sde-display-avatrn-evt3-overlay.dtbo
+dtbo-$(CONFIG_GENEVN_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-genevn-evb-overlay.dtbo \
+	       display/parrot-sde-display-genevn-dvt1-overlay.dtbo
+dtbo-$(CONFIG_BOSTON_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-boston-evb-overlay.dtbo
+dtbo-$(CONFIG_CUSCO_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-cusco-evb-overlay.dtbo
+dtbo-$(CONFIG_CUSCO_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-cuscoi-evb-overlay.dtbo
+dtbo-$(CONFIG_PARO_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-paro-evb-overlay.dtbo
+dtbo-$(CONFIG_PAROS_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-paros-evt-overlay.dtbo
+dtbo-$(CONFIG_KOBE_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-kobe-evt1-overlay.dtbo
+dtbo-$(CONFIG_MONA_DTB) += display/parrot-sde.dtbo \
+               display/parrot-sde-display-mona-evb-overlay.dtbo
+endif  #($CONFIG_EQS_DTB,y)
+else
+dtbo-$(CONFIG_ARCH_PARROT) += display/trustedvm-parrot-sde-display-idp-overlay.dtbo
+endif
+
+ifneq ($(CONFIG_ARCH_QTI_VM), y)
+dtbo-$(CONFIG_ARCH_RAVELIN) += display/ravelin-sde.dtbo \
+		display/ravelin-sde-display-atp-overlay.dtbo \
+		display/ravelin-sde-display-idp-overlay.dtbo \
+		display/ravelin-sde-display-idp-amoled-overlay.dtbo \
+		display/ravelin-sde-display-rumi-overlay.dtbo \
+		display/ravelin-sde-display-qrd-overlay.dtbo
+else
+dtbo-$(CONFIG_ARCH_RAVELIN) += display/trustedvm-ravelin-sde-display-idp-overlay.dtbo \
+		display/trustedvm-ravelin-sde-display-idp-amoled-overlay.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_WAIPIO), y)
+dtbo-y += gpu/waipio-gpu.dtbo \
+		gpu/waipio-v2-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KALAMA), y)
+dtbo-y += gpu/kalama-gpu.dtbo \
+		gpu/kalama-v2-gpu.dtbo \
+		gpu/kalama-iot-gpu.dtbo \
+		gpu/kalamap-hhg-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PINEAPPLE), y)
+dtbo-y += gpu/pineapple-gpu.dtbo \
+		gpu/pineapple-v2-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA8155), y)
+dtbo-y += gpu/sa8155-v2-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KHAJE), y)
+dtbo-y += gpu/khaje-gpu.dtbo \
+		gpu/khajep-gpu.dtbo \
+		gpu/khajeq-gpu.dtbo \
+		gpu/khajeg-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA8195), y)
+dtbo-y += gpu/sa8195p-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA6155), y)
+dtbo-y += gpu/sa6155p-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_MONACO), y)
+dtbo-y += gpu/monaco-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_LEMANS), y)
+dtbo-y += gpu/lemans-gpu.dtbo \
+		gpu/lemans-gpu-ivi-adas-star.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KONA), y)
+dtbo-y += gpu/kona-gpu.dtbo \
+		gpu/kona-v2-gpu.dtbo \
+		gpu/kona-v2.1-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_BLAIR), y)
+dtbo-y += gpu/blair-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_TRINKET), y)
+dtbo-y += gpu/trinket-gpu.dtbo \
+		gpu/trinketp-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_HOLI), y)
+dtbo-y += gpu/holi-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_QCS405), y)
+dtbo-y += gpu/qcs405-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PITTI), y)
+dtbo-y += gpu/pitti-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_CLIFFS), y)
+dtbo-y += gpu/cliffs-gpu.dtbo \
+		gpu/cliffs7-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_VOLCANO), y)
+dtbo-y += gpu/volcano-gpu.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_WAIPIO), y)
+dtbo-y += waipio-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_CAPE), y)
+dtbo-y += ukee-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_DIWALI), y)
+dtbo-y += diwali-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PARROT), y)
+dtbo-y += parrot-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_NEO), y)
+dtbo-y += neo-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KHAJE), y)
+dtbo-y += khaje-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_RAVELIN), y)
+dtbo-y += ravelin-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_MONACO), y)
+dtbo-y += monaco-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_BLAIR), y)
+dtbo-y += blair-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PITTI), y)
+dtbo-y += pitti-vidc.dtbo
+dtbo-y += pitti-vidc-32go.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_HOLI), y)
+dtbo-y += holi-vidc.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_MONACO_AUTO),y)
+dtbo-y += monaco_auto-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_WAIPIO),y)
+dtbo-y += waipio-cnss.dtbo
+dtbo-y += waipio-kiwi-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KALAMA),y)
+dtbo-y += kalama-cnss.dtbo
+dtbo-y += kalama-aim300-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_QCS405),y)
+dtbo-y += qcs405-icnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KHAJE),y)
+dtbo-y += khaje-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_BENGAL),y)
+dtbo-y += bengal-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_BLAIR),y)
+dtbo-y += blair-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_HOLI),y)
+dtbo-y += holi-cnss.dtbo
+dtbo-y += holi-pm6125-cnss.dtbo
+dtbo-y += holi-pm6125-nopmi-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_CROW),y)
+dtbo-y += crow-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_PITTI),y)
+dtbo-y += pitti-adrastea.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA6155),y)
+dtbo-y += sa6155p-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA8155),y)
+dtbo-y += sa8155p-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SA8195),y)
+dtbo-y += sa8195p-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_SDXPINN),y)
+dtbo-y += sdxpinn-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_MMI_DEVICE_DTBS),y)
+
+dtbo-$(CONFIG_ARCF_DTB) += pineapple-kiwi-cnss-arcf-evt1a.dtbo
+dtbo-$(CONFIG_CTWOV_DTB) += pineapple-kiwi-cnss-ctwov-evb.dtbo
+
+dtbo-$(CONFIG_ARCFOX_DTB) += cliffs-kiwi-cnss-arcfox-evt3.dtbo
+dtbo-$(CONFIG_CTWO_DTB) += cliffs-kiwi-cnss-ctwo-evb3.dtbo
+
+else
+
+ifeq ($(CONFIG_ARCH_PINEAPPLE),y)
+dtbo-y += pineapple-kiwi-cnss.dtbo
+dtbo-y += pineapplep-hdk-kiwi-cnss.dtbo
+dtbo-y += pineapplep-aim500-kiwi-cnss.dtbo
+endif
+endif # endif of CONFIG_MMI_DEVICE_DTBS
+
+ifeq ($(CONFIG_ARCH_NIOBE),y)
+dtbo-y += niobe-kiwi-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_CLIFFS),y)
+ifeq ($(CONFIG_MOT_CNSS_KIWI_V2),y)
+dtbo-y += cliffs-kiwi-cnss.dtbo
+else
+dtbo-y += cliffs-peach-cnss.dtbo
+dtbo-y += cliffs-qca6750.dtbo
+endif
+endif
+
+ifeq ($(CONFIG_ARCH_MONACO),y)
+dtbo-y += monaco-cnss.dtbo
+dtbo-y += monaco-standalone-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_LEMANS),y)
+ifneq ($(CONFIG_ARCH_QTI_VM),y)
+dtbo-y += lemans-cnss.dtbo
+endif
+endif
+
+ifeq ($(CONFIG_QTI_QUIN_GVM),y)
+dtbo-y += sa8155p-vm-cnss.dtbo
+dtbo-y += sa8195p-vm-cnss.dtbo
+dtbo-y += sa8255p-vm-cnss.dtbo
+dtbo-y += sa8295p-vm-cnss.dtbo
+dtbo-y += direwolf-vm-dual-cnss.dtbo
+dtbo-y += lemans-vm-cnss.dtbo
+dtbo-y += monaco-vm-cnss.dtbo
+dtbo-y += sa6155p-vm-cnss.dtbo
+endif
+
+
+ifeq ($(CONFIG_ARCH_SA525),y)
+dtbo-y += sa525m-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_KONA),y)
+dtbo-y += kona-iot-vc-cnss.dtbo
+endif
+
+ifeq ($(CONFIG_ARCH_TRINKET),y)
+dtbo-y += trinket-cnss.dtbo
+endif
+
 always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo
