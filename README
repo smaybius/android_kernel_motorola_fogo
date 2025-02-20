@@ -11,18 +11,16 @@ The SOC is the Snapdragon 4 Gen 1 (SM4375), and the device is a Moto G 5G 2024 (
  - kernel-msm-5.4-techpack-video
  - kernel-msm-5.4-techpack-camera
  - kernel-msm-5.4-techpack-audio
- - kernel-msm-techpack-dataipa
 - Do the same for all repos that have "devicetree" in the name.
 - You may see a few Moto repos under LineageOS that have "devicetree" and "modules" as separate repos. It's for newer kernels that follow such a structure, but not needed for anything 5.4.
-- Extract each techpack folder into `techpack/`, delete the `.gitignore`, and rename each folder to "display", "video", "camera", "audio", "dataipa".
+- Extract each techpack folder into `techpack/`, delete the `.gitignore`, and rename each folder to "display", "video", "camera", "audio".
 - Extract `motorola-kernel-modules-MMI-U1UFNS34.41-98-3-11` into the root of the repo, saying "yes" to any file being replaced.
 - Create a blank `Android.mk` file in the root if the `motorola/kernel/modules/AndroidKernelModule.mk: No such file or directory` error occurs.
 - In the root `Android.bp` file, remove the `cc_library_headers` with the `name: "qti_kernel_headers"`, because LineageOS already defines it itself.
 - For the individual `devicetree` repos:
  - For each extracted tag download, move all folders called `bindings` into `Documentation/devicetree` and say yes to each confirmation to replace files and merge folders.
  - Extract `kernel-devicetree-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts` and say yes to each confirmation to replace files.
- - extract `kernel-camera-devicetree-MMI-U1UFNS34.41-98-3-11` and `kernel-camera-devicetree-legacy-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts/qcom`.
- - extract the `display` folder of `kernel-display-devicetree-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts/qcom`.
+ - extract `kernel-camera-devicetree-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts/qcom`.
 - Find each broken symlink by opening the terminal to the root directory, and running `find . -type l -exec sh -c 'file -b "$1" | grep -q "^broken"' sh {} \; -print`, see where they're pointed to, and if they're supposed to point to something like `../../../../../kernel/msm-5.4/`, make it shallower. For example, if it's `../../../../../kernel/msm-5.4/drivers/pinctrl/pinctrl-utils.h`, change it to `../../../drivers/pinctrl/pinctrl-utils.h`.
 - Edit or delete all .gitignore files that exclude anything extracted from the other repos.
 - Open your terminal to `scripts/gki`, then run the following (except replace `/home/smaybius` with the absolute path of your LineageOS source tree):
