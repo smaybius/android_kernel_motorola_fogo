@@ -1,3 +1,52 @@
+How I added a Motorola kernel to LineageOS for a device and SOC that were never supported before
+================================================================================================
+The SOC is the Snapdragon 4 Gen 1 (SM4375), and the device is a Moto G 5G 2024 (fogo, or u1ufns34).
+
+**To add a new Moto device to LineageOS, first check if there's already a Moto-specific repo for your phone's SOC at https://github.com/LineageOS?q=kernel_motorola_&type=all&language=&sort=. If not, then follow these steps, but replace `U1UFNS34.41-98-3-11` with your phone's build ID, and replace `fogo` with your device's codename, and `holi` with your board's codename.**
+
+- Download the branch or tag of MotorolaMobilityLLC/kernel-msm for the device.
+ - The Moto G 5G 2024 is codename fogo, with a build ID of u1ufns34.*, meaning that you should find "u1ufns34" in the branches or tags.
+- Get the following techpacks, from the tag that contains "U1UFNS34":
+ - kernel-msm-5.4-techpack-display
+ - kernel-msm-5.4-techpack-video
+ - kernel-msm-5.4-techpack-camera
+ - kernel-msm-5.4-techpack-audio
+ - kernel-msm-techpack-dataipa
+- Do the same for all repos that have "devicetree" in the name.
+- You may see a few Moto repos under LineageOS that have "devicetree" and "modules" as separate repos. It's for newer kernels that follow such a structure, but not needed for anything 5.4.
+- Extract each techpack folder into `techpack/`, delete the `.gitignore`, and rename each folder to "display", "video", "camera", "audio", "dataipa".
+- Extract `motorola-kernel-modules-MMI-U1UFNS34.41-98-3-11` into the root of the repo, saying "yes" to any file being replaced.
+- Create a blank `Android.mk` file in the root if the `motorola/kernel/modules/AndroidKernelModule.mk: No such file or directory` error occurs.
+- In the root `Android.bp` file, remove the `cc_library_headers` with the `name: "qti_kernel_headers"`, because LineageOS already defines it itself.
+- For the individual `devicetree` repos:
+ - For each extracted tag download, move all folders called `bindings` into `Documentation/devicetree` and say yes to each confirmation to replace files and merge folders.
+ - Extract `kernel-devicetree-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts` and say yes to each confirmation to replace files.
+ - extract `kernel-camera-devicetree-MMI-U1UFNS34.41-98-3-11` and `kernel-camera-devicetree-legacy-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts/qcom`.
+ - extract the `display` folder of `kernel-display-devicetree-MMI-U1UFNS34.41-98-3-11` into `arch/arm64/boot/dts/qcom`.
+- Find each broken symlink by opening the terminal to the root directory, and running `find . -type l -exec sh -c 'file -b "$1" | grep -q "^broken"' sh {} \; -print`, see where they're pointed to, and if they're supposed to point to something like `../../../../../kernel/msm-5.4/`, make it shallower. For example, if it's `../../../../../kernel/msm-5.4/drivers/pinctrl/pinctrl-utils.h`, change it to `../../../drivers/pinctrl/pinctrl-utils.h`.
+- Edit or delete all .gitignore files that exclude anything extracted from the other repos.
+- Open your terminal to `scripts/gki`, then run the following (except replace `/home/smaybius` with the absolute path of your LineageOS source tree):
+```bash
+PATH="/home/smaybius/los/prebuilts/tools-lineage/linux-x86/bin:/home/smaybius/los/prebuilts/clang/host/linux-x86/clang-r530567/bin:$PATH"
+ARCH=arm64 \
+CROSS_COMPILE=aarch64-linux-gnu- \
+REAL_CC=clang \
+CLANG_TRIPLE=aarch64-linux-gnu- \
+LD=ld.lld \
+AR=llvm-ar \
+LLVM=1 \
+LLVM_IAS=1 \
+scripts/gki/generate_defconfig.sh \
+vendor/holi-qgki_defconfig
+```
+ - Or, copy your device's boot.img to the kernel root directory, open your terminal there, and run the following: `scripts/extract-ikconfig boot.img > arch/arm64/configs/fogo_defconfig`.
+
+Common errors:
+==============
+`arch/arm64/include/asm/stack_pointer.h:8:51: error: register 'sp' unsuitable for global register variables on this target`
+- Follow https://review.lineageos.org/q/topic:%225.4-full-llvm%22 for patches
+
+
 Linux kernel
 ============
 
