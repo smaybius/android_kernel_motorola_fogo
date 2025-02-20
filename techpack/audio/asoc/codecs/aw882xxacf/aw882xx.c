@@ -1342,7 +1342,7 @@ static int aw882xx_set_spin(struct snd_kcontrol *kcontrol,
 	aw_dev_dbg(aw882xx->dev, "ucontrol->value.integer.value[0]=%ld",
 			ucontrol->value.integer.value[0]);
 
-	aw_dev = aw882xx->aw_pa;
+	//aw_dev = aw882xx->aw_pa;
 
 	ctrl_value = ucontrol->value.integer.value[0];
 	if (aw882xx->pstream) {
@@ -1368,7 +1368,7 @@ static int aw882xx_get_spin(struct snd_kcontrol *kcontrol,
 	int ctrl_value;
 	int ret = -EINVAL;
 
-	aw_dev = aw882xx->aw_pa;
+	//aw_dev = aw882xx->aw_pa;
 
 	if (aw882xx->pstream) {
 		ret = aw_dev_get_spin(&ctrl_value);
