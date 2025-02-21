@@ -92,14 +92,6 @@ modules.order
 !.gitignore
 !.mailmap
 
-#
-# Generated include files
-#
-/include/config/
-/include/generated/
-/include/ksym/
-/arch/*/include/generated/
-
 # stgit generated dirs
 patches-*
 
@@ -146,10 +138,3 @@ x509.genkey
 
 # Clang's compilation database file
 /compile_commands.json
-
-# generated defconfigs
-arch/*/configs/vendor/*_defconfig
-
-# vendor device tree directories
-arch/arm64/boot/dts/vendor
-arch/arm/boot/dts/vendor
