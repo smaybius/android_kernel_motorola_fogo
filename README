@@ -40,10 +40,12 @@ vendor/holi-qgki_defconfig
 ```
  - Or, copy your device's boot.img to the kernel root directory, open your terminal there, and run the following: `scripts/extract-ikconfig boot.img > arch/arm64/configs/fogo_defconfig`.
 
-Common errors:
+Common errors in 5.4 Android kernels:
 ==============
 `arch/arm64/include/asm/stack_pointer.h:8:51: error: register 'sp' unsuitable for global register variables on this target`
 - Follow https://review.lineageos.org/q/topic:%225.4-full-llvm%22 for patches
+`clang: error: version 'kernel' in target triple 'arm-unknown-linux-androidkernel' is invalid`
+- Set `TARGET_KERNEL_NO_GCC := true` in your device's BoardConfig.mk
 
 
 Linux kernel
